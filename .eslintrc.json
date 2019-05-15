@@ -1,0 +1,16 @@
+{
+    "extends": "airbnb-base",
+    "env": {
+        "browser": true,
+        "es6": true,
+        "greasemonkey": true
+    },
+        "parserOptions": {
+        "ecmaVersion": 2017
+    },
+    "rules": {
+        "no-console":"off",
+        "comma-dangle": ["error", "never"],
+        "function-paren-newline": ["error", "consistent"]
+    }
+}
