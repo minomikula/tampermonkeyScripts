@@ -1,2 +1,2 @@
 # tampermonkeyScripts
-Custom scripts for tampermonkey
+Custom scripts for tampermonkey.
