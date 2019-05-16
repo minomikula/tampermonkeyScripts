@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Timeline - WORK
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.1.1
 // @description  try to take over the world!
 // @author       You
 // @match        https://www.google.sk/maps/timeline*
@@ -19,13 +19,12 @@
   function recalculateHours() {
     const workLines = jQuery('.place-history-moment-content')
       .toArray()
-      .filter(
-        line =>
-          jQuery(line)
-            .find('.place-visit-title')
-            .text()
-            .startsWith('Work')
-      );
+      .filter((line) => {
+        const text = jQuery(line)
+          .find('.place-visit-title')
+          .text();
+        return text.startsWith('Work') || text.startsWith('Práca');
+      });
     const datePairs = workLines.map(
       line =>
         jQuery(line)
