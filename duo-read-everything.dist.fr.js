@@ -215,7 +215,7 @@
     msg.rate = readCfg("speed", 1); // 0.1 to 10
     msg.pitch = 1; //0 to 2
     msg.text = sentence;
-    msg.lang = readCfg("lang", "it-IT");
+    msg.lang = readCfg("lang", "fr");
 
     msg.onend = function (e) {
       console.log("Finished in " + event.elapsedTime + " seconds.");
