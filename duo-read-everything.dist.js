@@ -1,4 +1,17 @@
-(function() {
+// ==UserScript==
+// @name         Duo read everithing
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://www.duolingo.com/*
+// @icon         https://raw.githubusercontent.com/camiloaa/duolingotreeenhancer/master/duolingo.png
+// @grant        none
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js
+
+// ==/UserScript==
+
+(function () {
   ("use strict");
   console.log("Main");
   clearInterval(window.duoTranslateEverithingInterval);
@@ -8,14 +21,14 @@
     CHOICE: "CHOICE",
     WRITE: "WRITE",
     SELECT_MISSING: "SELECT_MISSING",
-    SPEAK: "SPEAK"
+    SPEAK: "SPEAK",
   };
   const STATE = { PENDING: "PENDING", FAILED: "FAILED", CORRECT: "CORRECT" };
   const LANG = { FOREIGH: "FOREIGH", EN: "EN" };
   const ACTION = {
     CLICK_PLAY_BUTTON: "CLICK_PLAY_BUTTON",
     DO_NOTHING: "DO_NOTHING",
-    ACTION_NOT_FOUND: "ACTION_NOT_FOUND"
+    ACTION_NOT_FOUND: "ACTION_NOT_FOUND",
   };
 
   function testPage() {
@@ -59,33 +72,33 @@
     if (titleText === "Mark the correct meaning") {
       return {
         lang: LANG.FOREIGH,
-        type: TYPE.CHOICE
+        type: TYPE.CHOICE,
       };
     }
 
     if (titleText === "Select the missing word") {
       return {
         lang: LANG.FOREIGH,
-        type: TYPE.SELECT_MISSING
+        type: TYPE.SELECT_MISSING,
       };
     }
     // Write “the chair” in Italian
     if (titleText.match(/Write .* in (Italian|French|German)/)) {
       return {
         lang: LANG.FOREIGH,
-        type: TYPE.WRITE
+        type: TYPE.WRITE,
       };
     }
     if (titleText === "Write this in English") {
       return {
         lang: LANG.EN,
-        type: TYPE.WRITE
+        type: TYPE.WRITE,
       };
     }
     if (titleText === "Speak this sentence") {
       return {
         lang: LANG.FOREIGH,
-        type: TYPE.SPEAK
+        type: TYPE.SPEAK,
       };
     }
     return {};
@@ -141,21 +154,17 @@
 
   function getAnswerHeadingEl() {
     const nextBtn = jQuery('button[data-test="player-next"]');
-    return nextBtn
-      .parent()
-      .prev()
-      .find("h2")
-      .first();
+    return nextBtn.parent().prev().find("h2").first();
   }
   function findOneDifferent(arr) {
     const map = {};
-    arr.forEach(x => (map[x] = (map[x] || 0) + 1));
-    return arr.findIndex(x => map[x] === 1);
+    arr.forEach((x) => (map[x] = (map[x] || 0) + 1));
+    return arr.findIndex((x) => map[x] === 1);
   }
   function getSelectedChoiceText() {
     const highlightClass = "_3u9BR";
     const labels = jQuery('label[data-test="challenge-choice"]').toArray();
-    const classLists = labels.map(x => x.getAttribute("class"));
+    const classLists = labels.map((x) => x.getAttribute("class"));
     const selectedIdx = findOneDifferent(classLists);
     return jQuery(labels[selectedIdx])
       .find('div[data-test="challenge-judge-text"]')
@@ -181,9 +190,7 @@
     return challenge.replace(/_+/, replacement);
   }
   function getCorrectSolutionText() {
-    return getAnswerHeadingEl()
-      .next()
-      .text();
+    return getAnswerHeadingEl().next().text();
   }
 
   function playOriginalSpeakBtn() {
@@ -208,9 +215,9 @@
     msg.rate = readCfg("speed", 1); // 0.1 to 10
     msg.pitch = 1; //0 to 2
     msg.text = sentence;
-    msg.lang = readCfg("lang","it-IT");
+    msg.lang = readCfg("lang", "it-IT");
 
-    msg.onend = function(e) {
+    msg.onend = function (e) {
       console.log("Finished in " + event.elapsedTime + " seconds.");
     };
 
